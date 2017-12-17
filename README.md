@@ -78,7 +78,7 @@ At first, install LIVR module for Perl6
 zef install LIVR
 ```
 
-#### Example 1: Validation for user registration data
+#### Example 1: User registration data validation
 
 ```perl6
 use LIVR;
@@ -274,13 +274,11 @@ With such approach you can create some sort of pipe.
 ```perl6
 use LIVR;
 
-
 my $validator = LIVR::Validator.new(livr-rules => {
     email => [ 'trim', 'required', 'email', 'to_lc' ]
 });
 
 my $input-data = { email => ' EMail@Gmail.COM ' };
-
 my $output-data = $validator.validate($input-data);
 
 $output-data.say;
