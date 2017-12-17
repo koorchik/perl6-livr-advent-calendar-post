@@ -197,6 +197,7 @@ What is interesting in this example?
 1. The schema (validation rules) shape looks very similar to the data shape. It is much easier to read than JSON Schema, for example.
 2. It seems that nested\_object is a special syntax but in real it is not. The validator does not make any difference between 'required', 'nested\_object' 'max_length'. So, the core is very tiny and you can introduce new feature with custom rules. 
 3. Often you want to reuse complex validation rules like 'address' and it can be done with aliasing.
+4. You will receive hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```
 
 **Aliases**
 
@@ -342,19 +343,13 @@ Look at existing rules implementation for more examples:
 * [Modifiers rules](https://github.com/koorchik/perl6-livr/blob/master/lib/LIVR/Rules/Modifiers.pm6)
 * [Meta rules](https://github.com/koorchik/perl6-livr/blob/master/lib/LIVR/Rules/Meta.pm6)
 
-### Example 5: Real web service
+
+### Example 5: Web application
 
 
-
-
-
-Perl6 99% compatible with the spec, the only defference it works Perl6 Regexes and does not support Perl5 regexes for now.
-
-
-
-
-
-
-
-
-
+## LIVR links
+- [LIVR - Data Validation Without Any Issues](http://blog.webbylab.com/language-independent-validation-rules-library/)
+- [LIVR specifications (the latest version – 2.0)](http://livr-spec.org/)
+- [Test suite](https://github.com/koorchik/LIVR/tree/master/test_suite)
+- [LIVR Playground](http://webbylab.github.io/livr-playground/)
+- [LIVR Multi-Language Playground](http://livr-multi-playground.webbylab.com/)
