@@ -8,18 +8,18 @@ What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is
 
 There is LIVR for:
 
-* [Perl 15 \(LIVR 2.0\)](https://github.com/koorchik/Validator-LIVR) available at [CPAN](https://metacpan.org/pod/Validator::LIVR), maintainer [@koorchik](https://github.com/koorchik)
-* [Perl 6 \(LIVR 2.0\)](https://github.com/koorchik/perl6-livr) available at [CPAN](https://modules.perl6.org/dist/LIVR:cpan:KOORCHIK), maintainer [@koorchik](https://github.com/koorchik)
-* [JavaScript \(LIVR 2.0\)](https://github.com/koorchik/js-validator-livr) available at [npm](https://www.npmjs.com/package/livr), maintainer [@koorchik](https://github.com/koorchik)
-* [PHP \(LIVR 2.0\)](https://github.com/WebbyLab/php-validator-livr) available at [packagist](https://packagist.org/packages/validator/livr), maintainer [@WebbyLab](https://github.com/WebbyLab)
-* [Python \(LIVR 2.0\)](https://github.com/asholok/python-validator-livr) available at [pypi](https://pypi.python.org/pypi/LIVR), maintainer [@asholok](https://github.com/asholok)
-* [OLIFER Erlang \(LIVR 2.0\)](https://github.com/Prots/olifer), maintainer [@Prots](https://github.com/Prots)
-* [LIVER Erlang \(LIVR 2.0\)](https://github.com/erlangbureau/liver), maintainer [@erlangbureau](https://github.com/erlangbureau)
-* [Java \(LIVR 2.0\)](https://github.com/vlbaluk/java-validator-livr), maintainer [@vlbaluk](https://github.com/vlbaluk)
-* [Ruby \(LIVR 0.4, previous version\)](https://github.com/maktwin/ruby-validator-livr) at [rubygems](https://rubygems.org/gems/livr), maintainer [@maktwin](https://github.com/maktwin)
+* [Perl 15 (LIVR 2.0)](https://github.com/koorchik/Validator-LIVR) available at [CPAN](https://metacpan.org/pod/Validator::LIVR), maintainer [@koorchik](https://github.com/koorchik)
+* [Perl 6 (LIVR 2.0)](https://github.com/koorchik/perl6-livr) available at [CPAN](https://modules.perl6.org/dist/LIVR:cpan:KOORCHIK), maintainer [@koorchik](https://github.com/koorchik)
+* [JavaScript (LIVR 2.0)](https://github.com/koorchik/js-validator-livr) available at [npm](https://www.npmjs.com/package/livr), maintainer [@koorchik](https://github.com/koorchik)
+* [PHP (LIVR 2.0)](https://github.com/WebbyLab/php-validator-livr) available at [packagist](https://packagist.org/packages/validator/livr), maintainer [@WebbyLab](https://github.com/WebbyLab)
+* [Python (LIVR 2.0)](https://github.com/asholok/python-validator-livr) available at [pypi](https://pypi.python.org/pypi/LIVR), maintainer [@asholok](https://github.com/asholok)
+* [OLIFER Erlang (LIVR 2.0)](https://github.com/Prots/olifer), maintainer [@Prots](https://github.com/Prots)
+* [LIVER Erlang (LIVR 2.0)](https://github.com/erlangbureau/liver), maintainer [@erlangbureau](https://github.com/erlangbureau)
+* [Java (LIVR 2.0)](https://github.com/vlbaluk/java-validator-livr), maintainer [@vlbaluk](https://github.com/vlbaluk)
+* [Ruby (LIVR 0.4, previous version)](https://github.com/maktwin/ruby-validator-livr) at [rubygems](https://rubygems.org/gems/livr), maintainer [@maktwin](https://github.com/maktwin)
 
 
-I will give you a short intro about LIVR here but for details, I strongly recommend to read this post ["LIVR - Data Validation Without Any Issues"](http://blog.webbylab.com/language-independent-validation-rules-library/)
+I will give you a short intro about LIVR here but for details, I strongly recommend to read this post ["LIVR - Data Validation Without Any Issues"](http://blog.webbylab.com/language-independent-validation-rules-library/).
 
 ## LIVR Intro
 
@@ -67,9 +67,7 @@ This is the basic intro. More details are in the post I've mentioned above.
 
 ## LIVR and Perl6
 
-Let's have some fun and play with a code. I will go through several examples, and will provide some internal details after each example. 
-
-*The source code of all examples is [available on GitHub](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)*
+Let's have some fun and play with a code. I will go through several examples, and will provide some internal details after each example. The source code of all examples is [available on GitHub](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)
 
 At first, install LIVR module for Perl6 from CPAN
 
@@ -81,7 +79,9 @@ zef install LIVR
 
 ```
 use LIVR;
-LIVR::Validator.default-auto-trim(True); # automatically trim all values before validation
+
+# Automatically trim all values before validation
+LIVR::Validator.default-auto-trim(True);
 
 my $validator = LIVR::Validator.new(livr-rules => {
     name      => 'required',
@@ -446,9 +446,7 @@ class Service::Base {
 * Can check permissions before calling “execute”. 
 * Can do extra work like caching validator objects, etc.
 
-Here is [the full working example] (https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples/example5-restapi).
-
-The app is really tiny. 
+Here is [the full working example](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples/example5-restapi). 
 
 Run the app:
 
