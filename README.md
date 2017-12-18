@@ -71,7 +71,9 @@ This is the basic intro. More details are in the post I've mentioned above.
 
 ## LIVR and Perl6
 
-Let's have some fun and play with a code. I will go through several examples, and will provide some internal details after each example.
+Let's have some fun and play with a code. I will go through several examples, and will provide some internal details after each example. 
+
+*The source code of all examples is [available on GitHub](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)*
 
 At first, install LIVR module for Perl6 from CPAN
 
@@ -464,10 +466,11 @@ curl http://localhost:3000/notes
 ```
 
 ## LIVR links
-- The post ["LIVR - Data Validation Without Any Issues"](http://blog.webbylab.com/language-independent-validation-rules-library/)
-- [LIVR specifications and docs (the latest version – 2.0)](http://livr-spec.org/)
-- [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite)
-- You can play online with [LIVR Playground](http://webbylab.github.io/livr-playground/)
-- You can play online with [LIVR Multi-Language Playground](http://livr-multi-playground.webbylab.com/)
+* [The source code of all examples](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)
+* The post ["LIVR - Data Validation Without Any Issues"]*http://blog.webbylab.com/language-independent-validation-rules-library/)
+* [LIVR specifications and docs (the latest version – 2.0)](http://livr-spec.org/)
+* [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite)
+* You can play online with [LIVR Playground](http://webbylab.github.io/livr-playground/)
+* You can play online with [LIVR Multi-Language Playground](http://livr-multi-playground.webbylab.com/)
 
 I hope you will like the LIVR. I will appreciate any feedback. 
