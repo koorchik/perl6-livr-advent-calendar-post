@@ -2,7 +2,7 @@ I've just [ported LIVR to Perl6](https://modules.perl6.org/dist/LIVR:cpan:KOORCH
 
 What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is like ["Mustache"](https://mustache.github.io/) but in the world of validation. So, LIVR consists of the following parts:
 
-* [LIVR Specification](http://livr-spec.org/)
+* [LIVR Specification](http://livr-spec.org/).
 * [Implementations for different languages](http://livr-spec.org/introduction/implementations.html).
 * [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite), that is used for checking that the implementation works properly.
 
@@ -190,7 +190,7 @@ if my $valid-data = $validator.validate($user-data) {
 **What is interesting in this example?**
 
 * The schema (validation rules) shape looks very similar to the data shape. It is much easier to read than JSON Schema, for example.
-* It seems that nested\_object is a special syntax but it is not. The validator does not make any difference between 'required', 'nested\_object' 'max_length'. So, the core is very tiny and you can introduce a new feature easily with custom rules. 
+* It seems that "nested\_object" is a special syntax but it is not. The validator does not make any difference between "required", "nested\_object" "max\_length'. So, the core is very tiny and you can introduce a new feature easily with custom rules. 
 * Often you want to reuse complex validation rules like 'address' and it can be done with aliasing.
 * You will receive a hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```.
 
@@ -280,9 +280,9 @@ $output-data.say;
 
 **What is important here?**
 
-1. As I mentioned before, for the validator there is no difference between any of the rules. It treats "trim", "default", "required", "nested_object" the same way. 
-2. Rules are applied one after another. The output of a rule will be passed to the input of the next rule. It is like a bash pipe ```echo ' EMail@Gmail.COM ' | trim | required | email | to_lc```
-3. $input-data will be NEVER changed. $output-data is data you use after the validation.
+* As I mentioned before, for the validator there is no difference between any of the rules. It treats "trim", "default", "required", "nested_object" the same way. 
+* Rules are applied one after another. The output of a rule will be passed to the input of the next rule. It is like a bash pipe ```echo ' EMail@Gmail.COM ' | trim | required | email | to_lc```
+* $input-data will be NEVER changed. $output-data is data you use after the validation.
 
 ### Example 4: custom rules
 
@@ -439,6 +439,7 @@ class Service::Base {
 ```
 
 "run" method guarantees that all procedures are kept:
+
 * Data was validated.
 * “execute” will be called only after validation.
 * “execute” will receive only clean data.
