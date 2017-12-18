@@ -1,8 +1,4 @@
-Language Independent Validation Rules (LIVR) for Perl6
-------------------------------------------------------
-
-I've just [ported LIVR to Perl6]
-(https://modules.perl6.org/dist/LIVR:cpan:KOORCHIK) . It was really fun to code in Perl6. Moreover, LIVR's test suite allowed me to find a bug in Perl6 Email::Valid, and another one in Rakudo itself. It was even more fun that you not just implemented module but helped other developers to do some testing :)
+I've just [ported LIVR to Perl6](https://modules.perl6.org/dist/LIVR:cpan:KOORCHIK). It was really fun to code in Perl6. Moreover, LIVR's test suite allowed me to find a bug in Perl6 Email::Valid, and another one in Rakudo itself. It was even more fun that you not just implemented module but helped other developers to do some testing :)
 
 What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is like ["Mustache"](https://mustache.github.io/) but in the world of validation. So, LIVR consists of the following parts:
 
@@ -49,7 +45,7 @@ After trying tons of validation libraries, we had some vision in our heads about
 * Easy to implement own rules (usually you will have several in every project)
 * Rules should be able to change results output ("trim", "nested_object", for example)
 * Multipurpose (user input validation, configs validation etc)
-Unicode support.
+* Unicode support.
 
 
 ### LIVR Specification
@@ -65,7 +61,7 @@ The specifications’ objectives are:
 * To feature a set of testing data that allows checking if the implementation fits the specifications.
 * The basic idea was that the description of the validation rules must look like a data scheme and be as similar to data as possible, but with rules instead of values.
 
-The specification is available here http://livr-spec.org/
+The specification is available here http://livr-spec.org/.
 
 This is the basic intro. More details are in the post I've mentioned above.
 
@@ -83,7 +79,7 @@ zef install LIVR
 
 ### Example 1: registration data validation
 
-```perl6
+```
 use LIVR;
 LIVR::Validator.default-auto-trim(True); # automatically trim all values before validation
 
@@ -106,7 +102,8 @@ my $user-data = {
 
 
 if my $valid-data = $validator.validate($user-data) {
-    #  $valid-data is clean and does contain only fields which have validation and have passed it
+    # $valid-data is clean and does contain only fields 
+    # which have validation and have passed it
     $valid-data.say;
 } else {
     my $errors = $validator.errors();
@@ -115,11 +112,12 @@ if my $valid-data = $validator.validate($user-data) {
 ```
 
 **So, how to understand the rules?**
+
 The idea is very simple. Each rule is a hash. key - name of the validation rules. value - an array of arguments.
 
 For example:
 
-```perl6
+```
 { 
     name  => { required => [] },
     phone => { max_length => [10] }
@@ -128,7 +126,7 @@ For example:
 
 but if there is only one argument, you can use a shorter form:
 
-```perl6
+```
 { 
     phone => { max_length => 10 }
 }
@@ -136,7 +134,7 @@ but if there is only one argument, you can use a shorter form:
 
 if there are no arguments, you can just pass the name of the rule as string
 
-```perl6
+```
 { 
     name => 'required'
 }
@@ -144,7 +142,7 @@ if there are no arguments, you can just pass the name of the rule as string
 
 you can pass a list of rules for a field in an array:
 
-```perl6
+```
 { 
     name => [ 'required', { max_length => 10 } ]
 }
@@ -152,13 +150,13 @@ you can pass a list of rules for a field in an array:
 
 In this case, rules will be applied one after another. So, in this example, at first, the "required" rule will be applied and "max_length" after that and only if the "required" passed successfully.   
 
-Here is the [details in LIVR spec](http://livr-spec.org/validation-rules/how-it-works.html) 
+Here is the [details in LIVR spec](http://livr-spec.org/validation-rules/how-it-works.html).
 
-You can find the list of standard rules [here](http://livr-spec.org/validation-rules.html)
+You can find the list of standard rules [here](http://livr-spec.org/validation-rules.html).
 
 ### Example 2: validation of hierarchical data structure
 
-```perl6
+```
 use LIVR;
 
 my $validator = LIVR::Validator.new(livr-rules => {
@@ -194,11 +192,11 @@ if my $valid-data = $validator.validate($user-data) {
 * The schema (validation rules) shape looks very similar to the data shape. It is much easier to read than JSON Schema, for example.
 * It seems that nested\_object is a special syntax but it is not. The validator does not make any difference between 'required', 'nested\_object' 'max_length'. So, the core is very tiny and you can introduce a new feature easily with custom rules. 
 * Often you want to reuse complex validation rules like 'address' and it can be done with aliasing.
-* You will receive a hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```
+* You will receive a hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```.
 
 **Aliases**
 
-```perl6
+```
 use LIVR;
 
 LIVR::Validator.register-aliased-default-rule({
@@ -237,7 +235,7 @@ if my $valid-data = $validator.validate($user-data) {
 
 If you want, you can register aliases only for your validator instance:
 
-```perl6
+```
 use LIVR;
 
 my $validator = LIVR::Validator.new(livr-rules => {
@@ -252,7 +250,7 @@ $validator.register-aliased-rule({
 
 ```
 
-### Example 3: data modification, pipelining.
+### Example 3: data modification, pipelining
 
 There are rules that can do data modification. Here is the list of them:
 
@@ -263,11 +261,11 @@ There are rules that can do data modification. Here is the list of them:
 * leave_only
 * default
 
-You can [read details here](http://livr-spec.org/validation-rules/modifiers.html)
+You can [read details here](http://livr-spec.org/validation-rules/modifiers.html).
 
 With such approach, you can create some sort of pipe.
 
-```perl6
+```
 use LIVR;
 
 my $validator = LIVR::Validator.new(livr-rules => {
@@ -294,9 +292,9 @@ Usually,  we have 1-5 custom rules almost in every our project. Moreover, you ca
 
 **So, how to write a custom rule for LIVR?**
 
-Here is the example of 'strong_password'
+Here is the example of 'strong_password':
 
-```perl6
+```
 use LIVR;
 
 my $validator = LIVR::Validator.new(livr-rules => {
@@ -341,7 +339,7 @@ Look at existing rules implementation for more examples:
 
 LIVR works great for REST APIs. Usually, a lot of REST APIs have a problem with returning understandable errors. If a user of your API will receive HTTP error 500, it will not help him. Much better when he will get errors like 
 
-```json
+```
 {
     "name": "REQUIRED",
     "phone": "TOO_LONG",
@@ -372,20 +370,27 @@ We will have 2 services:
 * Service::Notes::Create
 * Service::Notes::List
 
-Service usage example
-```perl6
+Service usage example:
 
+```
 my %CONTEXT = (storage => my @STORAGE);
 
 my %note = title => 'Note1', text => 'Note text';
-my $new-note = Service::Notes::Create.new( context => %CONTEXT ).run(%note);
-my $list = Service::Notes::Create.new( context => %CONTEXT ).run({});
+
+my $new-note = Service::Notes::Create.new( 
+    context => %CONTEXT 
+).run(%note);
+
+my $list = Service::Notes::Create.new( 
+    context => %CONTEXT 
+).run({});
 ```
+
 With context you can inject any dependencies. "run" method accepts data passed by user. 
 
 Here is how the source code of the service for notes creation looks like:
 
-```perl6
+```
 use Service::Base;
 my $LAST_ID = 0;
 class Service::Notes::Create is Service::Base {
@@ -405,7 +410,7 @@ class Service::Notes::Create is Service::Base {
 
 and the Service::Base class:
 
-```perl6
+```
 use LIVR;
 LIVR::Validator.default-auto-trim(True);
 
@@ -420,7 +425,9 @@ class Service::Base {
     method !validate($params) {
         return $params unless %.validation-rules.elems;
 
-        my $validator = LIVR::Validator.new(livr-rules => %.validation-rules);
+        my $validator = LIVR::Validator.new(
+            livr-rules => %.validation-rules
+        );
 
         if my $valid-data = $validator.validate($params) {
             return $valid-data;
@@ -470,7 +477,7 @@ curl http://localhost:3000/notes
 ## LIVR links
 
 * [The source code of all examples](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)
-* The post ["LIVR - Data Validation Without Any Issues"]*http://blog.webbylab.com/language-independent-validation-rules-library/)
+* The post ["LIVR - Data Validation Without Any Issues"](http://blog.webbylab.com/language-independent-validation-rules-library/)
 * [LIVR specifications and docs (the latest version – 2.0)](http://livr-spec.org/)
 * [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite)
 * You can play online with [LIVR Playground](http://webbylab.github.io/livr-playground/)
