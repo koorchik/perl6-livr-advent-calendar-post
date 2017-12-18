@@ -6,9 +6,9 @@ I've just [ported LIVR to Perl6]
 
 What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is like ["Mustache"](https://mustache.github.io/) but in the world of validation. So, LIVR consists of the following parts:
 
-1. [LIVR Specification](http://livr-spec.org/)
-2. [Implementations for different languages](http://livr-spec.org/introduction/implementations.html).
-3. [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite), that is used for checking that the implementation works properly.
+* [LIVR Specification](http://livr-spec.org/)
+* [Implementations for different languages](http://livr-spec.org/introduction/implementations.html).
+* [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite), that is used for checking that the implementation works properly.
 
 There is LIVR for:
 
@@ -39,16 +39,16 @@ Therefore, it was decided to create a universal validator that could work across
 
 After trying tons of validation libraries, we had some vision in our heads about the issues we want to solve. Here are the requirements for the validator:
 
-1. Rules are declarative and language independent. So, rules for validation is just a data structure, not method calls etc. You can transform it, change it as you do this with any other data structure.
-2. Any number of rules for each field. 
-3. The validator should return together errors for all fields. For example, we want to highlight all errors in a form.
-4. Cut out all fields that do not have validation rules described. (otherwise, you cannot rely on your validation, someday you will have a security issue if the validator will not meet this property).
-5. Possibility to validate complex hierarchical structures. Especially useful for JSON APIs.
-6. Easy to describe and understand validation. 
-7. Returns understandable error codes (neither error messages nor numeric codes)
-8. Easy to implement own rules (usually you will have several in every project)
-9. Rules should be able to change results output ("trim", "nested_object", for example)
-10. Multipurpose (user input validation, configs validation etc)
+* Rules are declarative and language independent. So, rules for validation is just a data structure, not method calls etc. You can transform it, change it as you do this with any other data structure.
+* Any number of rules for each field. 
+* The validator should return together errors for all fields. For example, we want to highlight all errors in a form.
+* Cut out all fields that do not have validation rules described. (otherwise, you cannot rely on your validation, someday you will have a security issue if the validator will not meet this property).
+* Possibility to validate complex hierarchical structures. Especially useful for JSON APIs.
+* Easy to describe and understand validation. 
+* Returns understandable error codes (neither error messages nor numeric codes)
+* Easy to implement own rules (usually you will have several in every project)
+* Rules should be able to change results output ("trim", "nested_object", for example)
+* Multipurpose (user input validation, configs validation etc)
 Unicode support.
 
 
@@ -58,12 +58,12 @@ Since the task was set to create a validator independent of a programming langua
 
 The specifications’ objectives are:
 
-1. To standardize the data description format.
-2. To describe a minimal set of the validation rules that must be supported by every implementation.
-3. To standardize error codes.
-4. To be a single basic documentation for all the implementations.
-5. To feature a set of testing data that allows checking if the implementation fits the specifications.
-6. The basic idea was that the description of the validation rules must look like a data scheme and be as similar to data as possible, but with rules instead of values.
+* To standardize the data description format.
+* To describe a minimal set of the validation rules that must be supported by every implementation.
+* To standardize error codes.
+* To be a single basic documentation for all the implementations.
+* To feature a set of testing data that allows checking if the implementation fits the specifications.
+* The basic idea was that the description of the validation rules must look like a data scheme and be as similar to data as possible, but with rules instead of values.
 
 The specification is available here http://livr-spec.org/
 
@@ -77,7 +77,7 @@ Let's have some fun and play with a code. I will go through several examples, an
 
 At first, install LIVR module for Perl6 from CPAN
 
-```bash
+```
 zef install LIVR
 ```
 
@@ -180,7 +180,8 @@ my $user-data = {
 }
 
 if my $valid-data = $validator.validate($user-data) {
-    #  $valid-data is clean and does contain only fields which have validation and have passed it
+    # $valid-data is clean and does contain only fields 
+    # which have validation and have passed it
     $valid-data.say;
 } else {
     my $errors = $validator.errors();
@@ -190,10 +191,10 @@ if my $valid-data = $validator.validate($user-data) {
 
 **What is interesting in this example?**
 
-1. The schema (validation rules) shape looks very similar to the data shape. It is much easier to read than JSON Schema, for example.
-2. It seems that nested\_object is a special syntax but it is not. The validator does not make any difference between 'required', 'nested\_object' 'max_length'. So, the core is very tiny and you can introduce a new feature easily with custom rules. 
-3. Often you want to reuse complex validation rules like 'address' and it can be done with aliasing.
-4. You will receive a hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```
+* The schema (validation rules) shape looks very similar to the data shape. It is much easier to read than JSON Schema, for example.
+* It seems that nested\_object is a special syntax but it is not. The validator does not make any difference between 'required', 'nested\_object' 'max_length'. So, the core is very tiny and you can introduce a new feature easily with custom rules. 
+* Often you want to reuse complex validation rules like 'address' and it can be done with aliasing.
+* You will receive a hierarchical error message. For example, if you will miss city and name, the error object will look ```{name => 'REQUIRED', address => {city => 'REQUIRED'} }```
 
 **Aliases**
 
@@ -225,7 +226,8 @@ my $user-data = {
 }
 
 if my $valid-data = $validator.validate($user-data) {
-    #  $valid-data is clean and does contain only fields which have validation and have passed it
+    # $valid-data is clean and does contain only fields 
+    # which have validation and have passed it
     $valid-data.say;
 } else {
     my $errors = $validator.errors();
@@ -354,12 +356,12 @@ than just "Server error".
 
 So, let try to do a small web service with 2 endpoints:
 
-1. GET /notes -> get list of notes
-2. POST /notes -> create a note
+* GET /notes -> get list of notes
+* POST /notes -> create a note
 
 You will need to install Bailador for it:
 
-```bash
+```
 zef install Bailador
 ```
 
@@ -443,29 +445,30 @@ The app is really tiny.
 
 Run the app:
 
-```bash
+```
 perl6 app.pl6
 ```
 
 Create a note:
 
-```bash
+```
 curl -H "Content-Type: application/json" -X POST -d '{"title":"New Note","text":"Some text here"}' http://localhost:3000/notes
 ```
 
 Check validation:
 
-```bash
+```
 curl -H "Content-Type: application/json" -X POST -d '{"title":"","text":""}' http://localhost:3000/notes
 ```
 
 Get the list of notes:
 
-```bash
+```
 curl http://localhost:3000/notes
 ```
 
 ## LIVR links
+
 * [The source code of all examples](https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples)
 * The post ["LIVR - Data Validation Without Any Issues"]*http://blog.webbylab.com/language-independent-validation-rules-library/)
 * [LIVR specifications and docs (the latest version – 2.0)](http://livr-spec.org/)
