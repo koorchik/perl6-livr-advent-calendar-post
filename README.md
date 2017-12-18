@@ -8,7 +8,7 @@ What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is
 
 There is LIVR for:
 
-* [Perl 15 (LIVR 2.0)](https://github.com/koorchik/Validator-LIVR) available at [CPAN](https://metacpan.org/pod/Validator::LIVR), maintainer [@koorchik](https://github.com/koorchik)
+* [Perl 5 (LIVR 2.0)](https://github.com/koorchik/Validator-LIVR) available at [CPAN](https://metacpan.org/pod/Validator::LIVR), maintainer [@koorchik](https://github.com/koorchik)
 * [Perl 6 (LIVR 2.0)](https://github.com/koorchik/perl6-livr) available at [CPAN](https://modules.perl6.org/dist/LIVR:cpan:KOORCHIK), maintainer [@koorchik](https://github.com/koorchik)
 * [JavaScript (LIVR 2.0)](https://github.com/koorchik/js-validator-livr) available at [npm](https://www.npmjs.com/package/livr), maintainer [@koorchik](https://github.com/koorchik)
 * [PHP (LIVR 2.0)](https://github.com/WebbyLab/php-validator-livr) available at [packagist](https://packagist.org/packages/validator/livr), maintainer [@WebbyLab](https://github.com/WebbyLab)
