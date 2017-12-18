@@ -4,12 +4,10 @@ use Bailador;
 use Service::Notes::Create;
 use Service::Notes::List;
 
-my @STORAGE;
+my %CONTEXT = storage => my @STORAGE;
 
 sub run-sevice($service-class, %params) {
-    my $result = $service-class.new(
-        context => {storage => @STORAGE}
-    ).run(%params);
+    my $result = $service-class.new( context => %CONTEXT ).run(%params);
 
     return to-json({ status => 1, data => $result });
 
@@ -31,13 +29,8 @@ post '/notes' => sub {
 }
 
 ### Add some test data
-Service::Notes::Create.new(
-    context => {storage => @STORAGE}
-).run({title => 'My first note', text => 'Some text here'});
-
-Service::Notes::Create.new(
-    context => {storage => @STORAGE}
-).run({title => 'My second note', text => 'Some text here 2'});
+Service::Notes::Create.new( context => %CONTEXT ).run({title => 'My first note', text => 'Some text here'});
+Service::Notes::Create.new( context => %CONTEXT ).run({title => 'My second note', text => 'Some text here 2'});
 
 baile();
 

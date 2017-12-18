@@ -6,7 +6,7 @@ I've just [ported LIVR to Perl6](https://modules.perl6.org/dist/LIVR:cpan:KOORCH
 What is LIVR? LIVR stands for "Language Independent Validation Rules". So, it is like ["Mustache"](https://mustache.github.io/) but in world of validation. So, LIVR consists of the following parts:
 
 1. [LIVR Specification](http://livr-spec.org/)
-2. [Implemetations for different languages](http://livr-spec.org/introduction/implementations.html).
+2. [Implementations for different languages](http://livr-spec.org/introduction/implementations.html).
 3. [Universal test suite](https://github.com/koorchik/LIVR/tree/master/test_suite), that is used for checking that the implementation works properly.
 
 There is LIVR for
@@ -26,18 +26,18 @@ I will give you a short intro about LIVR here but for details, I strongly recomm
 
 ## What is LIVR?
 
-Data validation task is very common. I am sure that every developer faces it again an again. Especially, it is important when you develop Web application. It is a common rule - never trust uset input. It seems that if the task is so common, there should be tons of libraries. Yes it is, but it is very diffucult to find one that is ideal. Some of the libraries are do to many things (like HTML form generation etc), other libraries hard to extend, some does not provide hierarchical data validation etc 
+Data validation task is very common. I am sure that every developer faces it again an again. Especially, it is important when you develop Web application. It is a common rule - never trust uset input. It seems that if the task is so common, there should be tons of libraries. Yes it is, but it is very difficult to find one that is ideal. Some of the libraries are do to many things (like HTML form generation etc), other libraries hard to extend, some does not provide hierarchical data validation etc 
 
 Moreover, if you are a web developer, you need the same validation on the server and on the client.
 
 In WebbyLab, mainly we use 3 programming languages - Perl, JavaScript, PHP. So, for us, it was ideal to reuse similar validation approach across languages. 
 
-So, it was decided to create a univeral validator that could work across different languages.
+So, it was decided to create a universal validator that could work across different languages.
 
 
 ### Validator Requirements
 
-After trying tons of validators, we had some vision in hour heads about the issues we want to solve.
+After trying tons of validation libraries, we had some vision in hour heads about the issues we want to solve.
 
 1. Rules are declarative and language independent. So, rules validation is just a data structure, not method calls etc. You can transform it, change it as you this with a common data structure.
 2. Any number of rules for each field. 
@@ -82,7 +82,7 @@ zef install LIVR
 
 ```perl6
 use LIVR;
-LIVR::Validator.default-auto-trim(True); # autotrim all values before validation
+LIVR::Validator.default-auto-trim(True); # automatically trim all values before validation
 
 my $validator = LIVR::Validator.new(livr-rules => {
     name      => 'required',
@@ -129,7 +129,7 @@ For example:
 }
 ```
 
-but if there is only one agrument, you use a shorter form:
+but if there is only one argument, you use a shorter form:
 
 ```perl6
 { 
@@ -289,12 +289,12 @@ What is important here?
 
 1. As I mentioned before, for the validator there is not difference between any of the rules. It treats "trim", "default", "required", "nested_object" the same way. 
 2. Rules are applied one after another. Output of a rule will be passed to the input of the next rule. It is like a bash pipe ```echo ' EMail@Gmail.COM ' | trim | required | email | to_lc```
-3. $input-data will be NEVER changed. $outpu-data is data you use after the validation.
+3. $input-data will be NEVER changed. $output-data is data you use after the validation.
 
 
 ### Example 4: Custom rules
 
-You can use aliases as custom rules but sometimes it is not enaugh. It is absolutely fine to write a custom rule. You can do almost everything with custom rules. 
+You can use aliases as custom rules but sometimes it is not enough. It is absolutely fine to write a custom rule. You can do almost everything with custom rules. 
 
 Usually, in WebbyLab we have several custom rules almost in every of our project. Moreover, you can organize custom rules as a separate reusable module (even upload it to CPAN).
 
@@ -346,6 +346,134 @@ Look at existing rules implementation for more examples:
 
 ### Example 5: Web application
 
+LIVR works great for REST APIs. Usually, a lot of REST APIs have problem with returning understandable errors. If a user of your API will receive HTTP error 500, it will not help him. Much better when he will get errors like 
+
+```json
+{
+    "name": "REQUIRED",
+    "phone": "TOO_LONG",
+    "address": {
+        "city": "REQUIRED",
+        "zip": "NOT_POSITIVE_INTEGER"
+    }
+}
+```
+
+than just "Server error".
+
+So, let try to do a small web service with 2 endpoints:
+
+1. GET /notes -> get list of notes
+2. POST /notes -> create a note
+
+You need to install Bailador for it:
+
+```bash
+zef install Bailador
+```
+
+Let's create some services. I prefer "Command" pattern for the services with template method "run". 
+
+We will have 2 services:
+
+* Service::Notes::Create
+* Service::Notes::List
+
+
+Service usage example
+```perl6
+
+my %CONTEXT = (storage => my @STORAGE);
+
+my %note = title => 'Note1', text => 'Note text';
+my $new-note = Service::Notes::Create.new( context => %CONTEXT ).run(%note);
+my $list = Service::Notes::Create.new( context => %CONTEXT ).run({});
+```
+Using context you can inject any dependencies. "run" method accepts data passed by user. 
+
+Here is how the service for notes creation looks like:
+
+```perl6
+use Service::Base;
+my $LAST_ID = 0;
+class Service::Notes::Create is Service::Base {
+    has %.validation-rules = (
+        title => ['required', {max_length => 20} ],
+        text  => ['required', {max_length => 255} ]
+    );
+
+    method execute(%note) {
+        %note<id> = $LAST_ID++;
+        $.context<storage>.push(%note);
+        
+        return %note;
+    }
+}
+```
+
+and the Service::Base class
+
+```perl6
+use LIVR;
+LIVR::Validator.default-auto-trim(True);
+
+class Service::Base {
+    has $.context = {};
+
+    method run(%params) {
+        my %clean-data = self!validate(%params);
+        return self.execute(%params);
+    }
+
+    method !validate($params) {
+        return $params unless %.validation-rules.elems;
+
+        my $validator = LIVR::Validator.new(livr-rules => %.validation-rules);
+
+        if my $valid-data = $validator.validate($params) {
+            return $valid-data;
+        } else {
+            die $validator.errors();
+        }
+    }
+}
+```
+
+"run" method guarantees that all procedures are kept:
+* Data was validated.
+* “execute” will be called only after validation.
+* “execute” will receive only clean data.
+* Throws exception in case of validation errors.
+* Can check permissions before calling “execute”. 
+* Can do extra work like caching validator objects, etc.
+
+Here is [the full working example] (https://github.com/koorchik/perl6-livr-advent-calendar-post/tree/master/examples/example5-restapi).
+
+The app is really tiny. 
+
+Run the app:
+
+```bash
+perl6 app.pl6
+```
+
+Create a note:
+
+```bash
+curl -H "Content-Type: application/json" -X POST -d '{"title":"New Note","text":"Some text here"}' http://localhost:3000/notes
+```
+
+Check validation:
+
+```bash
+curl -H "Content-Type: application/json" -X POST -d '{"title":"","text":""}' http://localhost:3000/notes
+```
+
+Get list of notes:
+
+```bash
+curl http://localhost:3000/notes
+```
 
 ## LIVR links
 - [LIVR - Data Validation Without Any Issues](http://blog.webbylab.com/language-independent-validation-rules-library/)
